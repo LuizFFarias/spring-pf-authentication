@@ -31,5 +31,6 @@ public class Perfil {
     @Column(name = "NM_Perfil")
     private String nome;
 
+    @OneToMany(mappedBy = "perfil", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Permissao> permissoes;
 }

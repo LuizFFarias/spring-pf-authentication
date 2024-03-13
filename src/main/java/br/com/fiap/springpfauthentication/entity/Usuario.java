@@ -33,5 +33,11 @@ public class Usuario {
     @Column(name = "SENHA_USUARIO")
     private  String senha;
 
+    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(
+            name = "PESSOA",
+            referencedColumnName = "ID_PESSOA",
+            foreignKey = @ForeignKey(name = "FK_PESSOA_USUARIO")
+    )
     private Pessoa pessoa;
 }

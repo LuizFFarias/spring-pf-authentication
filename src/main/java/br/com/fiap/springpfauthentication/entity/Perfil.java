@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
@@ -31,6 +32,28 @@ public class Perfil {
     @Column(name = "NM_Perfil")
     private String nome;
 
-    @OneToMany(mappedBy = "perfil", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Permissao> permissoes;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(
+            name = "TB_PERMISSAO_PERFIL",
+            joinColumns = {
+                    @JoinColumn(
+                            name = "PERFIL",
+                            referencedColumnName = "ID_PERFIL",
+                            foreignKey = @ForeignKey(
+                                    name = "FK_PERMISSOES_PERFIL"
+                            )
+                    )
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(
+                            name = "PERMISSAO",
+                            referencedColumnName = "ID_PERMISSAO",
+                            foreignKey = @ForeignKey(
+                                    name = "FK_PERFIL_PERMISSOES"
+                            )
+                    )
+            }
+    )
+
+    private Set<Permissao> permissoes = new LinkedHashSet<>();
 }
